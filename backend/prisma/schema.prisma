@@ -10,13 +10,15 @@ datasource db {
 
 model user {
   id           Int            @id @default(autoincrement())
-  firtsName    String
+  firstName    String
   lastName     String
   email        String         @unique
   username     String         @unique
   verified     Boolean        @default(false)
-  password     String
-  imageurl     String
+  password     String?
+  imageurl     String?
+  otp          String?
+  otpExpires   DateTime?
   organization organization[]
 
   @@map("Users")

@@ -1,10 +1,10 @@
 import express from "express";
-import { readdirSync } from "fs";
 import cors from "cors";
 import https from "https";
 import cron from "node-cron";
 import { sayHelloController } from "./controllers";
 import { errorHandler } from "./middlewares";
+import { router } from "./routes";
 
 const app = express();
 
@@ -27,17 +27,14 @@ cron.schedule("*/5 * * * *", () => {
   console.log("pinging the server every minute");
 });
 
-//serve all routes dynamically using readdirsync
-readdirSync("./src/routes").map((path) =>
-  app.use("/api", require(`./routes/${path}`))
-);
+app.use("/api/auth", router);
 
 app.get("/", sayHelloController);
 
 app.use(errorHandler);
 
 app.use(cors());
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
