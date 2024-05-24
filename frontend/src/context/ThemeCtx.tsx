@@ -36,6 +36,7 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         "border-radius: 4px;",
       ].join(";");
     console.log(t, n);
+
     if (theme === "system") {
       document.documentElement.classList.remove("dark");
       document.documentElement.classList.remove("light");

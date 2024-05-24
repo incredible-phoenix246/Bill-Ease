@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "../styles/globals.scss";
 import { nunito } from "@/fonts";
 import ThemeProvider from "@/context/ThemeCtx";
-
+import { RoundThemeButton } from "@/components/theme";
 export const metadata: Metadata = {
   title: {
     default: "Bill Ease: Simplify Your Billing and Invoicing",
@@ -24,7 +24,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ThemeProvider>
-        <body className={nunito.className}>{children}</body>
+        <body
+          className={`${nunito.className} dark:bg-dark-background bg-background dark:text-background text-dark-background`}
+        >
+          {children}
+          <RoundThemeButton />
+        </body>
       </ThemeProvider>
     </html>
   );
