@@ -26,7 +26,7 @@ const HomePage = () => {
               <p className="mt-8  text-2xl leading-8 dark:text-background w-[495px] max-md:max-w-full text-dark-background">
                 BillEase is a versatile application designed to streamline the
                 creation of receipts, invoices, and various payment-related
-                documents. Whether you're a small business owner, freelancer, or
+                documents. Whether you&apos;re a small business owner, freelancer, or
                 enterprise,
               </p>
               <Button className="bg-primary h-[56] hover:bg-primary-light text-primary-content mt-8 dark:bg-secondary dark:text-secondary-content">
@@ -344,7 +344,7 @@ const CTA = () => {
               Digitize your pamyents collection
             </h3>
             <p className="text-copy-light dark:text-dark-copy-light">
-              Joined over 15+ Developers already growing with BillEase. what's
+              Joined over 15+ Developers already growing with BillEase. what&apos;s
               holding you back?
             </p>
           </div>
