@@ -341,10 +341,10 @@ const CTA = () => {
           />
           <div className="py-8 text-center">
             <h3 className="font-manrope text-3xl  text-copy dark:text-dark-copy font-bold mb-4">
-              Having revenue problem? We’ve got skills.
+              Digitize your pamyents collection
             </h3>
             <p className="text-copy-light dark:text-dark-copy-light">
-              Joined over 400+ startups already growing with pagedone. what's
+              Joined over 15+ Developers already growing with BillEase. what's
               holding you back?
             </p>
           </div>
