@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <ThemeProvider>
         <body
-          className={`${nunito.className} dark:bg-dark-background bg-background dark:text-background text-dark-background`}
+          className={`${nunito.className} dark:bg-dark-background bg-background dark:text-background text-dark-background transition-colors duration-300`}
         >
           {children}
           <RoundThemeButton />

@@ -1,3 +1,85 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #685fd4;
+  border-radius: 8px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #ffff00;
+  border-radius: 8px;
+}
+
+.box {
+  position: relative;
+  /* width: 358px;
+  height: 272px; */
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -ms-align-items: center;
+  overflow: hidden;
+}
+
+.dark .box .content {
+  background-color: #111522;
+}
+
+.dark .box::after {
+  background-color: #111522;
+}
+
+.box .content {
+  /* position: relative; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -ms-align-items: center;
+  background-color: #eaedf5;
+  z-index: 20;
+}
+
+.box::before {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 180%;
+  background: linear-gradient(#685fd4, #ffff00);
+  animation: rotate 4s linear infinite;
+}
+
+.box::after {
+  content: "";
+  position: absolute;
+  background: #eaedf5;
+  inset: 2px;
+  border-radius: 20px;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .box::before {
+    width: 150px;
+    height: 200%;
+  }
+}
