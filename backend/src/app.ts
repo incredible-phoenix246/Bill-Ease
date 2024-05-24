@@ -23,7 +23,7 @@ function keepAlive(url: string) {
 
 // cron job to ping the server every minute and delete expired tokens every 5 minutes
 cron.schedule("*/5 * * * *", () => {
-  keepAlive("");
+  keepAlive("https://bill-ease.onrender.com/");
   console.log("pinging the server every minute");
 });
 
