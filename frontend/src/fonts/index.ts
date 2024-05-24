@@ -51,4 +51,12 @@ const radioCanada = Radio_Canada({
   variable: "--font-radio-canada",
 });
 
-export { radioCanada, nunito, openSans, workSans, manrope, montserrat };
+export {
+  radioCanada,
+  nunito,
+  openSans,
+  workSans,
+  manrope,
+  montserrat,
+  poppins,
+};

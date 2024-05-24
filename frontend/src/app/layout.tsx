@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import "../styles/globals.scss";
-import { nunito } from "@/fonts";
+import {
+  nunito,
+  manrope,
+  montserrat,
+  radioCanada,
+  workSans,
+  openSans,
+  poppins,
+} from "@/fonts";
 import ThemeProvider from "@/context/ThemeCtx";
 import { RoundThemeButton } from "@/components/theme";
 export const metadata: Metadata = {
@@ -25,7 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <ThemeProvider>
         <body
-          className={`${nunito.className} dark:bg-dark-background bg-background dark:text-background text-dark-background transition-colors duration-300`}
+          className={`${nunito.className} ${montserrat.variable} ${manrope.variable} ${workSans.variable} ${radioCanada.variable} ${openSans.variable} ${poppins.variable} dark:bg-dark-background bg-background dark:text-background text-dark-background transition-colors duration-300`}
         >
           {children}
           <RoundThemeButton />

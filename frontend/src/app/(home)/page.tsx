@@ -1,10 +1,11 @@
 import React from "react";
-import { HomePage } from "@/modules/home";
+import { HomePage, BehindBIllEase } from "@/modules/home";
 
 const page = () => {
   return (
     <>
       <HomePage />
+      <BehindBIllEase />
     </>
   );
 };
