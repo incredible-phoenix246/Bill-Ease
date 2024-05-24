@@ -11,6 +11,7 @@ import {
 } from "@/fonts";
 import ThemeProvider from "@/context/ThemeCtx";
 import { RoundThemeButton } from "@/components/theme";
+import { Toaster } from "@/components/ui/toaster";
 export const metadata: Metadata = {
   title: {
     default: "Bill Ease: Simplify Your Billing and Invoicing",
@@ -37,6 +38,7 @@ export default function RootLayout({
         >
           {children}
           <RoundThemeButton />
+          <Toaster />
         </body>
       </ThemeProvider>
     </html>
