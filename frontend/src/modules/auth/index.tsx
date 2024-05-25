@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
@@ -47,18 +47,6 @@ const Registger = () => {
         </motion.div>
       </div>
     </section>
-  );
-};
-
-const LoginWithGoggle = () => {
-  return (
-    <Button
-      onClick={() => signIn("google")}
-      className="rounded-full w-full h-[56px] font-medium font-worksans flex space-x-2 text-[16px] bg-background dark:bg-dark-background dark:text-dark-copy hover:bg-foreground hover:dark:bg-dark-foreground text-copy"
-    >
-      <FcGoogle />
-      <span>Login with Google</span>
-    </Button>
   );
 };
 
@@ -137,4 +125,4 @@ const Login = () => {
   );
 };
 
-export { Registger, LoginWithGoggle, Login };
+export { Registger, Login };

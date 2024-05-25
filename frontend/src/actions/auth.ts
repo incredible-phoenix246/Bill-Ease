@@ -4,6 +4,7 @@ import { LoginSchema, RegisterSchema, OtpSchema } from "@/schemas";
 import * as z from "zod";
 import { baseurl } from "@/utils";
 import Calls from "./axios";
+import { signIn } from "@/auth";
 
 const $Http = Calls(baseurl);
 
@@ -21,6 +22,11 @@ const login = async (values: z.infer<typeof LoginSchema>) => {
 
   try {
     const res = await $Http.post("/auth/login", loginvalues);
+    return {
+      status: res.status,
+      message: res.data.message,
+      user: res.data.user,
+    };
   } catch (e: any) {
     return {
       message: e?.response?.data,
@@ -75,7 +81,6 @@ const Otp = async (values: z.infer<typeof OtpSchema>, userId: string) => {
     return {
       status: res.status,
       message: res.data.message,
-      user: res.data.user,
     };
   } catch (e: any) {
     return {
@@ -85,4 +90,8 @@ const Otp = async (values: z.infer<typeof OtpSchema>, userId: string) => {
   }
 };
 
-export { login, register, Otp };
+const GOOGLE_SIGN_IN = async (redirectUrl: string) => {
+  await signIn("google", { redirectTo: redirectUrl });
+};
+
+export { login, register, Otp, GOOGLE_SIGN_IN };

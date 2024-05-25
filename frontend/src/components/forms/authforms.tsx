@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
@@ -13,7 +12,7 @@ import {
 } from "../ui/form";
 import { cn } from "@/utils";
 import { Input } from "../ui/input";
-import { LoginWithGoggle } from "@/modules/auth";
+import { LoginWithGoggle } from "@/modules/auth/social";
 import { LoginSchema, RegisterSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
