@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React, { useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import * as z from "zod";
 import {
   Form,
@@ -11,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+import { cn } from "@/utils";
 import { Input } from "../ui/input";
 import { LoginWithGoggle } from "@/modules/auth";
 import { LoginSchema, RegisterSchema } from "@/schemas";
@@ -23,13 +24,7 @@ import { Eye, EyeSlash } from "iconsax-react";
 import { useStateCtx } from "@/context/StateCtx";
 import { OtpModal } from "@/components/modals";
 import { User } from "@/types";
-
-const Data: User = {
-  email: "ayomikuntemitope246@gmail.com",
-  imageUrl: "/",
-  username: "phoenix",
-  fullName: "ayomikun temitope",
-};
+import { register, login } from "@/actions/auth";
 
 const LoginForm = () => {
   const { toast } = useToast();
@@ -161,7 +156,9 @@ const SignUpform = () => {
   const [defaultInpType, setDefaultInpType] = useState<"password" | "text">(
     "password"
   );
-  const { ShowOtp, setShowOtp } = useStateCtx();
+  const [user, setuser] = useState<User>();
+  const { setShowOtp } = useStateCtx();
+  const [isLoading, startTransition] = useTransition();
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -172,19 +169,38 @@ const SignUpform = () => {
       fullName: "",
     },
   });
+
+  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
+    startTransition(() => {
+      register(values).then((data) => {
+        toast({
+          title:
+            data.status === 201
+              ? "Registration successfully!"
+              : "An error occured",
+          description: `${data.message}`,
+        });
+
+        if (data.status === 201) {
+          setShowOtp(true);
+          setuser(data.user);
+        }
+      });
+    });
+  };
   return (
     <div className="flex flex-col grow md:px-5 py-20 mt-8 w-full text-base font-bold leading-6 bg-dark-background dark:bg-background rounded-t-[35px] max-md:px-5 max-md:mt-10 max-md:max-w-full">
       <h2 className="text-center text-4xl font-medium leading-6 text-dark-copy dark:text-copy capitalize">
-        welcome back
+        welcome
       </h2>
       <p className="self-center mt-4 text-right text-dark-copy dark:text-copy">
-        Please login to continue
+        Please signup to continue
       </p>
       <Form {...form}>
         <form
           action=""
           className="flex flex-col mt-8 gap-y-6 md:gap-y-6 "
-          //   onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit)}
         >
           <FormField
             control={form.control}
@@ -196,12 +212,13 @@ const SignUpform = () => {
                     <Input
                       {...field}
                       id="fullName"
+                      disabled={isLoading}
                       type="text"
                       className="block px-2.5 pb-2.5 placeholder:dark:text-background placeholder:text-dark-background pt-4 w-full  text-sm text-dark-copy dark:text-copy rounded-lg border border-background dark:border-dark-background h-[56px] dark:focus:border-primary focus:border-secondary focus:outline-none focus:ring-0 peer"
                       placeholder="email | username"
                     />
                     <FormLabel
-                      htmlFor="identifier"
+                      htmlFor="fullName"
                       className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 peer-placeholder-shown:bg-transparent transform -translate-y-4 scale-75 top-2 z-10 origin-[0] peer-focus:dark:bg-background dark:bg-background peer-focus:bg-dark-background bg-dark-background px-2 peer-focus:px-2 peer-focus:text-secondary peer-focus:dark:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-3"
                     >
                       FullName
@@ -221,13 +238,14 @@ const SignUpform = () => {
                   <div className="relative">
                     <Input
                       {...field}
-                      id="fullName"
+                      id="email"
                       type="email"
+                      disabled={isLoading}
                       className="block px-2.5 pb-2.5 placeholder:dark:text-background placeholder:text-dark-background pt-4 w-full  text-sm text-dark-copy dark:text-copy rounded-lg border border-background dark:border-dark-background h-[56px] dark:focus:border-primary focus:border-secondary focus:outline-none focus:ring-0 peer"
                       placeholder="email | username"
                     />
                     <FormLabel
-                      htmlFor="identifier"
+                      htmlFor="email"
                       className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 peer-placeholder-shown:bg-transparent transform -translate-y-4 scale-75 top-2 z-10 origin-[0] peer-focus:dark:bg-background dark:bg-background peer-focus:bg-dark-background bg-dark-background px-2 peer-focus:px-2 peer-focus:text-secondary peer-focus:dark:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-3"
                     >
                       Email
@@ -247,13 +265,14 @@ const SignUpform = () => {
                   <div className="relative">
                     <Input
                       {...field}
-                      id="fullName"
+                      id="username"
                       type="text"
+                      disabled={isLoading}
                       className="block px-2.5 pb-2.5 placeholder:dark:text-background placeholder:text-dark-background pt-4 w-full  text-sm text-dark-copy dark:text-copy rounded-lg border border-background dark:border-dark-background h-[56px] dark:focus:border-primary focus:border-secondary focus:outline-none focus:ring-0 peer"
                       placeholder="email | username"
                     />
                     <FormLabel
-                      htmlFor="identifier"
+                      htmlFor="username"
                       className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 peer-placeholder-shown:bg-transparent transform -translate-y-4 scale-75 top-2 z-10 origin-[0] peer-focus:dark:bg-background dark:bg-background peer-focus:bg-dark-background bg-dark-background px-2 peer-focus:px-2 peer-focus:text-secondary peer-focus:dark:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-3"
                     >
                       Username
@@ -276,6 +295,7 @@ const SignUpform = () => {
                       <Input
                         {...field}
                         id="password"
+                        disabled={isLoading}
                         type={defaultInpType}
                         className="block px-2.5 pb-2.5 placeholder:dark:text-background placeholder:text-dark-background pt-4 w-full  text-sm text-dark-copy dark:text-copy rounded-lg border border-background dark:border-dark-background h-[56px] dark:focus:border-primary focus:border-secondary focus:outline-none focus:ring-0 peer"
                         placeholder="email | username"
@@ -316,13 +336,14 @@ const SignUpform = () => {
                     <div className="relative w-full">
                       <Input
                         {...field}
-                        id="password"
+                        id="confirmpassword"
+                        disabled={isLoading}
                         type={defaultInpType}
                         className="block px-2.5 pb-2.5 placeholder:dark:text-background placeholder:text-dark-background pt-4 w-full  text-sm text-dark-copy dark:text-copy rounded-lg border border-background dark:border-dark-background h-[56px] dark:focus:border-primary focus:border-secondary focus:outline-none focus:ring-0 peer"
                         placeholder="email | username"
                       />
                       <FormLabel
-                        htmlFor="password"
+                        htmlFor="confirmpassword"
                         className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 peer-placeholder-shown:bg-transparent transform -translate-y-4 scale-75 top-2 z-10 origin-[0] peer-focus:dark:bg-background dark:bg-background peer-focus:bg-dark-background bg-dark-background px-2 peer-focus:px-2 peer-focus:text-secondary peer-focus:dark:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-3"
                       >
                         Confirm Password
@@ -358,11 +379,75 @@ const SignUpform = () => {
           </span>
           <div className="flex relative items-center [perspective:300px] transform-gpu max-sm:w-full">
             <Button
-              onClick={() => setShowOtp(true)}
-              type="button"
-              className="rounded-full w-full h-[56px] font-medium font-worksans flex space-x-2 text-[16px] bg-background dark:bg-dark-background dark:text-dark-copy hover:bg-foreground hover:dark:bg-dark-foreground text-copy"
+              type="submit"
+              className={cn(
+                "rounded-full w-full h-[56px] font-medium font-worksans flex items-center space-x-2 text-[16px] bg-background dark:bg-dark-background dark:text-dark-copy hover:bg-foreground hover:dark:bg-dark-foreground text-copy",
+                isLoading && "relative"
+              )}
             >
-              Sign Up
+              {isLoading ? (
+                <>
+                  {/* <div className="loader">
+                    <span className="loader-text">Please wait ...</span>
+                    <span className="load" />
+                  </div> */}
+                  <svg
+                    viewBox="0 0 240 240"
+                    height="240"
+                    width="240"
+                    className="pl relative"
+                  >
+                    <circle
+                      strokeLinecap="round"
+                      strokeDashoffset="-330"
+                      strokeDasharray="0 660"
+                      strokeWidth="20"
+                      stroke="#000"
+                      fill="none"
+                      r="105"
+                      cy="120"
+                      cx="120"
+                      className="pl__ring pl__ring--a"
+                    ></circle>
+                    <circle
+                      strokeLinecap="round"
+                      strokeDashoffset="-110"
+                      strokeDasharray="0 220"
+                      strokeWidth="20"
+                      stroke="#000"
+                      fill="none"
+                      r="35"
+                      cy="120"
+                      cx="120"
+                      className="pl__ring pl__ring--b"
+                    ></circle>
+                    <circle
+                      strokeLinecap="round"
+                      strokeDasharray="0 440"
+                      strokeWidth="20"
+                      stroke="#000"
+                      fill="none"
+                      r="70"
+                      cy="120"
+                      cx="85"
+                      className="pl__ring pl__ring--c"
+                    ></circle>
+                    <circle
+                      strokeLinecap="round"
+                      strokeDasharray="0 440"
+                      strokeWidth="20"
+                      stroke="#000"
+                      fill="none"
+                      r="70"
+                      cy="120"
+                      cx="155"
+                      className="pl__ring pl__ring--d"
+                    ></circle>
+                  </svg>
+                </>
+              ) : (
+                " Sign Up"
+              )}
             </Button>
           </div>
         </form>
@@ -379,7 +464,7 @@ const SignUpform = () => {
           Login
         </Link>
       </span>
-      <OtpModal {...Data} />
+      {user && <OtpModal {...user} />}
     </div>
   );
 };

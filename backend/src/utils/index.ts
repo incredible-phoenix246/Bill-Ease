@@ -1,7 +1,7 @@
 export const generateNumericOTP = (length: number): string => {
   let otp = "";
   for (let i = 0; i < length; i++) {
-    otp += Math.floor(Math.random() * 10).toString();
+    otp += Math.floor(Math.random() * 9 + 1).toString();
   }
   return otp;
 };

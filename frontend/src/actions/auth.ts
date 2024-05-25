@@ -1,6 +1,6 @@
 "use server";
 
-import { LoginSchema, RegisterSchema } from "@/schemas";
+import { LoginSchema, RegisterSchema, OtpSchema } from "@/schemas";
 import * as z from "zod";
 import { baseurl } from "@/utils";
 import Calls from "./axios";
@@ -21,14 +21,18 @@ const login = async (values: z.infer<typeof LoginSchema>) => {
 
   try {
     const res = await $Http.post("/auth/login", loginvalues);
-  } catch (error) {
+  } catch (e: any) {
     return {
-      error: "Something went wrong.",
+      message: e?.response?.data,
+      status: e?.response?.status,
     };
   }
 };
 
-const register = async (values: z.infer<typeof RegisterSchema>) => {
+const register = async (
+  values: z.infer<typeof RegisterSchema>,
+  userId: string
+) => {
   const validatedFields = RegisterSchema.safeParse(values);
   if (!validatedFields.success) {
     return {
@@ -49,12 +53,39 @@ const register = async (values: z.infer<typeof RegisterSchema>) => {
 
   try {
     const res = await $Http.post("/auth/register", userdata);
-    console.log(res);
-  } catch (error) {
+
     return {
-      error: "Something went wrong.",
+      status: res.status,
+      message: res.data.message,
+      user: res.data.user,
+    };
+  } catch (e: any) {
+    return {
+      message: e?.response?.data.message,
+      status: e?.response?.status,
     };
   }
 };
 
-export { login, register };
+const Otp = async (values: z.infer<typeof OtpSchema>, userId: string) => {
+  const otp = values;
+
+  const userdata = { otp, userId };
+
+  try {
+    const res = await $Http.post("/auth/verify-otp", userdata);
+
+    return {
+      status: res.status,
+      message: res.data.message,
+      user: res.data.user,
+    };
+  } catch (e: any) {
+    return {
+      message: e?.response?.data.message,
+      status: e?.response?.status,
+    };
+  }
+};
+
+export { login, register, Otp };

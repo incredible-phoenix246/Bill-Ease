@@ -27,7 +27,5 @@ export const RegisterSchema = z.object({
 });
 
 export const OtpSchema = z.object({
-  otp: z.string().min(3, {
-    message: "Feild is required",
-  }),
+  otp: z.string(),
 });

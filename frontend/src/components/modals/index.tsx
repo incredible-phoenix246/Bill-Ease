@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useStateCtx } from "@/context/StateCtx";
 import { cn } from "@/utils";
 import {
@@ -14,24 +15,46 @@ import { User } from "@/types";
 import { maskEmail } from "@/utils";
 import { ToastAction } from "@/components/ui/toast";
 import Link from "next/link";
+import { OtpSchema } from "@/schemas";
+import * as z from "zod";
+import { Otp } from "@/actions/auth";
+import { useRouter } from "next/navigation";
 
-const OtpModal = ({ email }: User) => {
+const OtpModal = ({ email, id }: User) => {
   const { ShowOtp, setShowOtp } = useStateCtx();
   const { toast } = useToast();
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = useState("");
+  const [isLoading, startTransition] = useTransition();
+  const router = useRouter();
 
-  const onSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (
+    value: z.infer<typeof OtpSchema>,
+    e?: React.FormEvent<HTMLFormElement>
+  ) => {
     e?.preventDefault?.();
-    toast({
-      title: "OTP verified successfully!",
-      description: "Your account is now active. Login to continue",
-      action: (
-        <ToastAction altText="Try again">
-          <Link href="/auth/login">Login</Link>
-        </ToastAction>
-      ),
+    startTransition(() => {
+      Otp(value, id).then((data) => {
+        // console.log(data);
+        toast({
+          title:
+            data.status === 200
+              ? "OTP verification successfully!"
+              : "An error occured",
+          description: `${data.message}`,
+          action: (
+            <ToastAction altText="Login">
+              <Link href="/auth/login">Login</Link>
+            </ToastAction>
+          ),
+        });
+
+        if (data.status === 200) {
+          setValue("");
+          setShowOtp(false);
+          router.push("/auth/login");
+        }
+      });
     });
-    setValue("");
   };
 
   return (
@@ -73,6 +96,7 @@ const OtpModal = ({ email }: User) => {
                   onComplete={onSubmit}
                   value={value}
                   onChange={setValue}
+                  disabled={isLoading}
                 >
                   <InputOTPGroup>
                     <InputOTPSlot
@@ -109,17 +133,18 @@ const OtpModal = ({ email }: User) => {
                 </InputOTP>
               </div>
 
-              <div className="flex flex-col space-y-5">
-                <div className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500">
-                  <p>Didn't recieve code?</p>{" "}
-                  <a
+              <div className="flex flex-col space-y-3">
+                <div className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1">
+                  <p>Didn't recieve code?</p>
+                  <button
                     className="flex flex-row items-center text-blue-600"
-                    href="http://"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    disabled
                   >
                     Resend
-                  </a>
+                  </button>
+                </div>
+                <div className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 ">
+                  <p>OTP expires in 15 mins</p>
                 </div>
               </div>
             </div>
@@ -131,3 +156,6 @@ const OtpModal = ({ email }: User) => {
 };
 
 export { OtpModal };
+
+
+// http://localhost:3000/auth/login?identifier=Phoenix&password=phoenix246

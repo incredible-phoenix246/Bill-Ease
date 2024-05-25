@@ -59,7 +59,7 @@ const Register = async (req: Request, res: Response) => {
         username,
         email,
         password: hashedPassword,
-        otp,
+        otp: otp.toString(),
         otpExpires,
       },
     });
@@ -81,6 +81,7 @@ const Register = async (req: Request, res: Response) => {
       user: rest,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
