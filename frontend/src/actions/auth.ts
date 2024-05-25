@@ -29,10 +29,7 @@ const login = async (values: z.infer<typeof LoginSchema>) => {
   }
 };
 
-const register = async (
-  values: z.infer<typeof RegisterSchema>,
-  userId: string
-) => {
+const register = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values);
   if (!validatedFields.success) {
     return {
