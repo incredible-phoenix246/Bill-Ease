@@ -1,14 +1,17 @@
 import { Request, Response, NextFunction } from "express";
 import prisma from "../utils/prisma";
 import bcrypt from "bcryptjs";
-import { generateNumericOTP, capitalizeFirstLetter } from "../utils";
+import {
+  generateNumericOTP,
+  capitalizeFirstLetter,
+  getFirstName,
+} from "../utils";
 import { Sendmail } from "../utils/mailer";
 import { compilerOtp } from "../compiler";
 import jwt from "jsonwebtoken";
 
 interface bodyProps {
-  firstName: string;
-  lastName: string;
+  fullName: string;
   username: string;
   email: string;
   password: string;
@@ -20,10 +23,9 @@ interface LoginProps {
 }
 
 const Register = async (req: Request, res: Response) => {
-  const { firstName, lastName, username, email, password }: bodyProps =
-    req.body;
+  const { fullName, username, email, password }: bodyProps = req.body;
 
-  if (!firstName) {
+  if (!fullName) {
     return res.status(400).json({ message: "Please enter your first name" });
   }
   if (!email) {
@@ -53,8 +55,7 @@ const Register = async (req: Request, res: Response) => {
 
     const user = await prisma.user.create({
       data: {
-        firstName,
-        lastName,
+        fullName,
         username,
         email,
         password: hashedPassword,
@@ -64,11 +65,13 @@ const Register = async (req: Request, res: Response) => {
     });
     const { password: _, ...rest } = user;
 
+    const capitalizedFirstName = getFirstName(fullName);
+
     await Sendmail({
       from: `BIll EASE <support@billease.com>`,
       to: email,
       subject: "OTP VERIFICATION",
-      html: compilerOtp(capitalizeFirstLetter(firstName), parseInt(otp)),
+      html: compilerOtp(capitalizedFirstName, parseInt(otp)),
     });
 
     return res.status(201).json({
@@ -172,8 +175,7 @@ const LoginwithGoogle = async (req: Request, res: Response) => {
         data: {
           email,
           imageurl: image,
-          firstName: name,
-          lastName: "",
+          fullName: name,
           username: email.split("@")[0],
           verified: true,
         },

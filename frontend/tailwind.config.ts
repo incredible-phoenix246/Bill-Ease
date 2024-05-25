@@ -111,6 +111,10 @@ const config: Config = {
             opacity: "1",
           },
         },
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -123,6 +127,7 @@ const config: Config = {
           "rotate3d 2s 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite",
         slideDown: "slideDown 1s 0.2s ease forwards",
         slideNavUp: "slideDown 1s 0.2s ease forwards",
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
       fontFamily: {
         montserrat: [`var(--font-montserrat)`, "sans-serif"],

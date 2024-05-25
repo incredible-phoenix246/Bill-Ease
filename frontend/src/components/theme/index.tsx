@@ -4,9 +4,11 @@ import React from "react";
 import { useThemeContext } from "@/context/ThemeCtx";
 import { cn } from "@/utils";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
+import { usePathname } from "next/navigation";
 
 const RoundThemeButton = () => {
   const { theme, setTheme } = useThemeContext();
+  const pathName = usePathname();
 
   return (
     <button

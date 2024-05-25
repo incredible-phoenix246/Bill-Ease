@@ -10,3 +10,8 @@ export function capitalizeFirstLetter(name: string): string {
   if (!name) return "";
   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
+
+export function getFirstName(fullName: string): string {
+  const firstName = fullName.split(" ")[0];
+  return capitalizeFirstLetter(firstName);
+}
