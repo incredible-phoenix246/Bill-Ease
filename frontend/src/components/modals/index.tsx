@@ -135,7 +135,7 @@ const OtpModal = ({ email, id }: User) => {
 
               <div className="flex flex-col space-y-3">
                 <div className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1">
-                  <p>Didn't recieve code?</p>
+                  <p>Didn&apos;t recieve code?</p>
                   <button
                     className="flex flex-row items-center text-blue-600"
                     disabled
@@ -156,6 +156,5 @@ const OtpModal = ({ email, id }: User) => {
 };
 
 export { OtpModal };
-
 
 // http://localhost:3000/auth/login?identifier=Phoenix&password=phoenix246
