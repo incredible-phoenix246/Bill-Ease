@@ -36,6 +36,25 @@ const register = async (values: z.infer<typeof RegisterSchema>) => {
     };
   }
 
-  const { email, firstName, lastName, username, password } =
+  const { email, fullName, username, password, passwordConfirm } =
     validatedFields.data;
+
+  if (password !== passwordConfirm) {
+    return {
+      error: "Password and Confirm Password do not match.",
+    };
+  }
+
+  const userdata = { email, fullName, username, password };
+
+  try {
+    const res = await $Http.post("/auth/register", userdata);
+    console.log(res);
+  } catch (error) {
+    return {
+      error: "Something went wrong.",
+    };
+  }
 };
+
+export { login, register };

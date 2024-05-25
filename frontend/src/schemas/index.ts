@@ -10,17 +10,24 @@ export const LoginSchema = z.object({
 });
 
 export const RegisterSchema = z.object({
-  firstName: z.string().min(3, {
+  fullName: z.string().min(3, {
     message: "Full name is required",
   }),
-  lastName: z.string().min(3, {
-    message: "lastname is required",
-  }),
+
   username: z.string().min(3, {
     message: "username is required",
   }),
   email: z.string().email(),
   password: z.string().min(6, {
     message: "Password must be at least 6 characters",
+  }),
+  passwordConfirm: z.string().min(5, {
+    message: "Password confirmation must be at least 5 characters long",
+  }),
+});
+
+export const OtpSchema = z.object({
+  otp: z.string().min(3, {
+    message: "Feild is required",
   }),
 });
