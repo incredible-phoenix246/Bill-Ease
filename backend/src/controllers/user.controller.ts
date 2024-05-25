@@ -157,4 +157,42 @@ const Login = async (req: Request, res: Response) => {
   }
 };
 
-export { Register, VerifyOtp, Login };
+const LoginwithGoogle = async (req: Request, res: Response) => {
+  const { email, name, image } = req.body;
+
+  try {
+    let user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          email,
+          imageurl: image,
+          firstName: name,
+          lastName: "",
+          username: email.split("@")[0],
+          verified: true,
+        },
+      });
+    }
+
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token,
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+export { Register, VerifyOtp, Login, LoginwithGoogle };

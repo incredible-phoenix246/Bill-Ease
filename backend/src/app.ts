@@ -27,7 +27,7 @@ cron.schedule("*/5 * * * *", () => {
   console.log("pinging the server every minute");
 });
 
-app.use("/api/auth", router);
+app.use("/api", router);
 
 app.get("/", sayHelloController);
 

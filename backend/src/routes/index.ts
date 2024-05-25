@@ -1,12 +1,16 @@
 import { Router } from "express";
-import { sayHelloController } from "../controllers";
-import { Register, VerifyOtp, Login } from "../controllers/user.controller";
+import {
+  Register,
+  VerifyOtp,
+  Login,
+  LoginwithGoogle,
+} from "../controllers/user.controller";
 
 const router = Router();
 
-router.get("/", sayHelloController);
-router.post("/register", Register);
-router.post("/verify-otp", VerifyOtp);
-router.post("/login", Login);
+router.post("/auth/register", Register);
+router.post("/auth/verify-otp", VerifyOtp);
+router.post("/auth/login", Login);
+router.post("/auth/google", LoginwithGoogle);
 
 export { router };
