@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const baseurl = "http://localhost:5000/api";
+export const baseurl = "https://bill-ease.onrender.com/api";
 
 export function maskEmail(email: string): string {
   const [localPart, domain] = email.split("@");
