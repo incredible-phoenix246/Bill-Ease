@@ -4,7 +4,7 @@ import { LoginSchema, RegisterSchema, OtpSchema } from "@/schemas";
 import * as z from "zod";
 import { baseurl } from "@/utils";
 import Calls from "./axios";
-import { signIn } from "@/auth";
+// import { signIn } from "@/auth";
 
 const $Http = Calls(baseurl);
 
@@ -91,7 +91,7 @@ const Otp = async (values: z.infer<typeof OtpSchema>, userId: string) => {
 };
 
 const GOOGLE_SIGN_IN = async (redirectUrl: string) => {
-  await signIn("google", { redirectTo: redirectUrl });
+  // await signIn("google", { redirectTo: redirectUrl });
 };
 
 export { login, register, Otp, GOOGLE_SIGN_IN };

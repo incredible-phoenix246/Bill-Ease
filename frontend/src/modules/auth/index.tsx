@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { signIn, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
