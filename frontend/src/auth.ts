@@ -1,15 +1,17 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import type {
+  GetServerSidePropsContext,
+  NextApiRequest,
+  NextApiResponse,
+} from "next"
+import { getServerSession } from "next-auth"
+import authConfig from "@/auth.config";
 
-import authConfig from "./auth.config";
 
-// export const BASE_PATH = "/api/auth";
-// export const handlers = NextAuth({
-//   events: {
-//     async signIn({ user }) {
-//       console.log("signIn", user.email);
-//     },
-//   },
-//   ...authConfig,
-//   basePath: BASE_PATH,
-//   secret: process.env.AUTH_SECRET,
-// });
+export function auth(
+  ...args:
+    | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
+    | [NextApiRequest, NextApiResponse]
+    | []
+) {
+  return getServerSession(...args, authConfig)
+}

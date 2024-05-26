@@ -6,6 +6,7 @@ import { baseurl } from "./utils";
 import Calls from "./actions/axios";
 import { LoginSchema } from "./schemas";
 import { GOOGLE_SIGN_IN } from "./actions/auth";
+import { Redirect } from "next";
 
 const $Http = Calls(baseurl);
 
@@ -25,13 +26,11 @@ const authConfig: NextAuthOptions = {
       },
     }),
     Credentials({
-      name: "Credentials",
-      id: "credentials",
-      type: "credentials",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "username" },
+        identifier: { label: "Username | email", type: "text", placeholder: "username" },
         password: { label: "Password", type: "password" },
       },
+      
       authorize: async (credentials) => {
         const validatedFields = LoginSchema.safeParse(credentials);
 
@@ -39,6 +38,7 @@ const authConfig: NextAuthOptions = {
           const { identifier, password } = validatedFields.data;
 
           const user = await login({ identifier, password });
+     
           if (!user) return null;
 
           return user.user;
@@ -52,7 +52,6 @@ const authConfig: NextAuthOptions = {
       if (account?.provider === "google") {
         console.log(profile);
         const res = await GOOGLE_SIGN_IN(profile);
-        console.log(res);
         return res.user;
       }
       return true;
@@ -77,8 +76,10 @@ const authConfig: NextAuthOptions = {
     },
     pages: {
       signIn: "/auth/login",
+    
     },
   },
+
 };
 
 export default authConfig;

@@ -29,7 +29,7 @@ const login = async (values: z.infer<typeof LoginSchema>) => {
     };
   } catch (e: any) {
     return {
-      message: e?.response?.data,
+      message: e?.response?.data.message,
       status: e?.response?.status,
     };
   }

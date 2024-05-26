@@ -119,8 +119,7 @@ const VerifyOtp = async (req: Request, res: Response) => {
 };
 
 const Login = async (req: Request, res: Response) => {
-  const { identifier, password }: LoginProps = req.body;
-
+  const { identifier, password }: LoginProps = req.body;  
   try {
     const user = await prisma.user.findFirst({
       where: {
@@ -136,6 +135,12 @@ const Login = async (req: Request, res: Response) => {
 
     if (!user.verified) {
       return res.status(400).json({ message: "Account is not verified" });
+    }
+
+    if (!user.password){
+      return res
+       .status(400)
+       .json({ message: "Account was cereated with google auth create a password or login with google" });
     }
 
     // Verify password
@@ -166,7 +171,6 @@ const Login = async (req: Request, res: Response) => {
 
 const LoginwithGoogle = async (req: Request, res: Response) => {
   const { email, name, image } = req.body;
-  console.log(email, name, image);
 
   try {
     let user = await prisma.user.findUnique({
@@ -190,8 +194,6 @@ const LoginwithGoogle = async (req: Request, res: Response) => {
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-
-    console.log(user);
 
     const { password: _, ...rest } = user;
     return res.status(200).json({

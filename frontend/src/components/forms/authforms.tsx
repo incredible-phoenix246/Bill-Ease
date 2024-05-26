@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
+import { signIn } from "next-auth/react";
 import * as z from "zod";
 import {
   Form,
@@ -24,12 +25,16 @@ import { useStateCtx } from "@/context/StateCtx";
 import { OtpModal } from "@/components/modals";
 import { User } from "@/types";
 import { register, login } from "@/actions/auth";
+import { useRouter } from "next/navigation";
+
+
 
 const LoginForm = () => {
   const { toast } = useToast();
   const [defaultInpType, setDefaultInpType] = useState<"password" | "text">(
     "password"
   );
+  const router = useRouter();
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -37,6 +42,25 @@ const LoginForm = () => {
       password: "",
     },
   });
+    const [isLoading, startTransition] = useTransition();
+
+    const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    startTransition(() => {
+      login(values).then(async (data) => {
+   signIn("credentials", {values, callbackUrl: '/dashboard'})
+        toast({
+          title:
+            data.status === 200
+              ? "Login successfull!"
+              : "An error occured",
+          description: `${data.message}`,
+        });
+
+        router.push("/dashboard")
+
+      });
+    });
+  };
   return (
     <div className="flex flex-col grow md:px-5 py-20 mt-8 w-full text-base font-bold leading-6 bg-dark-background dark:bg-background rounded-t-[35px] max-md:px-5 max-md:mt-10 max-md:max-w-full">
       <h2 className="text-center text-4xl font-medium leading-6 text-dark-copy dark:text-copy capitalize">
@@ -49,7 +73,7 @@ const LoginForm = () => {
         <form
           action=""
           className="flex flex-col mt-8 gap-y-6 md:gap-y-6 "
-          //   onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit)}
         >
           <FormField
             control={form.control}
