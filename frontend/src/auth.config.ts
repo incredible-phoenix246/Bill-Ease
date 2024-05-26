@@ -75,7 +75,6 @@ const authConfig: NextAuthOptions = {
       return { ...token, ...user, ...account, ...profile, ...use };
     },
     async session({ session, token, user }) {
-      console.log(user);
       session.user = token as any;
       return session;
     },
