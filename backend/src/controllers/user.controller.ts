@@ -166,6 +166,7 @@ const Login = async (req: Request, res: Response) => {
 
 const LoginwithGoogle = async (req: Request, res: Response) => {
   const { email, name, image } = req.body;
+  console.log(email, name, image);
 
   try {
     let user = await prisma.user.findUnique({
@@ -189,6 +190,8 @@ const LoginwithGoogle = async (req: Request, res: Response) => {
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
+
+    console.log(user);
 
     const { password: _, ...rest } = user;
     return res.status(200).json({

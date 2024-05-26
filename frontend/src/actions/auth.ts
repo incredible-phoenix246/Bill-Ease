@@ -90,8 +90,25 @@ const Otp = async (values: z.infer<typeof OtpSchema>, userId: string) => {
   }
 };
 
-const GOOGLE_SIGN_IN = async (redirectUrl: string) => {
-  // await signIn("google", { redirectTo: redirectUrl });
+const GOOGLE_SIGN_IN = async (profile: any) => {
+  try {
+    const res = await $Http.post("/auth/google", {
+      email: profile?.email,
+      name: profile?.name,
+      image: profile?.picture,
+    });
+
+    return {
+      status: res.status,
+      message: res.data.message,
+      user: res.data.user,
+    };
+  } catch (e: any) {
+    return {
+      message: e?.response?.data.message,
+      status: e?.response?.status,
+    };
+  }
 };
 
 export { login, register, Otp, GOOGLE_SIGN_IN };

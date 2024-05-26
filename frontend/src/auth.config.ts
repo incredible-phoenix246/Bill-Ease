@@ -5,10 +5,11 @@ import { login } from "./actions/auth";
 import { baseurl } from "./utils";
 import Calls from "./actions/axios";
 import { LoginSchema } from "./schemas";
+import { GOOGLE_SIGN_IN } from "./actions/auth";
 
 const $Http = Calls(baseurl);
 
-const authConfig: NextAuthOptions =  {
+const authConfig: NextAuthOptions = {
   secret: "i AM A SECretive secret",
 
   providers: [
@@ -24,12 +25,12 @@ const authConfig: NextAuthOptions =  {
       },
     }),
     Credentials({
-      name: 'Credentials',
-      id: 'credentials',
-      type: 'credentials',
+      name: "Credentials",
+      id: "credentials",
+      type: "credentials",
       credentials: {
-        username: {label: "Username", type: "text", placeholder: "username"},
-        password: {label: "Password", type: 'password'}
+        username: { label: "Username", type: "text", placeholder: "username" },
+        password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
         const validatedFields = LoginSchema.safeParse(credentials);
@@ -47,32 +48,37 @@ const authConfig: NextAuthOptions =  {
     }),
   ],
   callbacks: {
-    // @ts-expect-error
     async signIn({ account, profile }) {
-      if (account!.provider === "google") {
-        
-        console.log("Logging Provider");
+      if (account?.provider === "google") {
         console.log(profile);
-        
-        return true
+        const res = await GOOGLE_SIGN_IN(profile);
+        console.log(res);
+        return res.user;
       }
+      return true;
     },
     // @ts-expect-error
-    async jwt(token: { accessToken: any; }, user: any, account: { accessToken: any; }, profile: any, isNewUser: any) {
+    async jwt(
+      token: { accessToken: any },
+      user: any,
+      account: { accessToken: any },
+      profile: any,
+      isNewUser: any
+    ) {
       if (account?.accessToken) {
         token.accessToken = account.accessToken;
       }
       return token;
     },
     // @ts-expect-error
-    async session(session: { accessToken: any; }, token: { accessToken: any; }) {
+    async session(session: { accessToken: any }, token: { accessToken: any }) {
       session.accessToken = token.accessToken;
       return session;
     },
     pages: {
-      signIn: '/auth/login'
+      signIn: "/auth/login",
     },
-  }
-}
+  },
+};
 
-export default authConfig
+export default authConfig;
