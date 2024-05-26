@@ -7,6 +7,7 @@ import Calls from "./actions/axios";
 import { LoginSchema } from "./schemas";
 import { GOOGLE_SIGN_IN } from "./actions/auth";
 import { Redirect } from "next";
+import { User } from "./types";
 
 const $Http = Calls(baseurl);
 
@@ -17,6 +18,14 @@ const authConfig: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      // profile(profile) {
+      //   return {
+      //     id: profile.sub,
+      //     name: profile.name,
+      //     email: profile.email,
+      //     image: profile.picture,
+      //   };
+      // },
       authorization: {
         params: {
           prompt: "consent",
@@ -27,59 +36,53 @@ const authConfig: NextAuthOptions = {
     }),
     Credentials({
       credentials: {
-        identifier: { label: "Username | email", type: "text", placeholder: "username" },
+        identifier: {
+          label: "Username | email",
+          type: "text",
+          placeholder: "username",
+        },
         password: { label: "Password", type: "password" },
       },
-      
+
       authorize: async (credentials) => {
-        const validatedFields = LoginSchema.safeParse(credentials);
-
-        if (validatedFields.success) {
-          const { identifier, password } = validatedFields.data;
-
-          const user = await login({ identifier, password });
-     
-          if (!user) return null;
-
-          return user.user;
+        //@ts-ignore
+        const parsedValues = JSON.parse(credentials.loginva);
+        const validatedFields = LoginSchema.safeParse(parsedValues);
+        if (!validatedFields.success) {
+          return null;
         }
-        return true;
+        const { identifier, password } = validatedFields.data;
+        const res = await login({ identifier, password });
+        if (!res) return null;
+
+        const user = res.user;
+
+        return user;
       },
     }),
   ],
   callbacks: {
-    async signIn({ account, profile }) {
-      if (account?.provider === "google") {
-        console.log(profile);
-        const res = await GOOGLE_SIGN_IN(profile);
-        return res.user;
-      }
-      return true;
+    async signIn({ account, profile, user }: any) {
+      return { ...account, ...profile, ...user };
     },
-    // @ts-expect-error
-    async jwt(
-      token: { accessToken: any },
-      user: any,
-      account: { accessToken: any },
-      profile: any,
-      isNewUser: any
-    ) {
-      if (account?.accessToken) {
-        token.accessToken = account.accessToken;
+
+    async jwt({ token, user, account, profile }: any) {
+      if (account?.provider !== "google") {
+        return { ...token, ...user, ...account, ...profile };
       }
-      return token;
+      const res = await GOOGLE_SIGN_IN(profile);
+      const use = res.user;
+      return { ...token, ...user, ...account, ...profile, ...use };
     },
-    // @ts-expect-error
-    async session(session: { accessToken: any }, token: { accessToken: any }) {
-      session.accessToken = token.accessToken;
+    async session({ session, token, user }) {
+      console.log(user);
+      session.user = token as any;
       return session;
     },
-    pages: {
-      signIn: "/auth/login",
-    
-    },
   },
-
+  pages: {
+    signIn: "/auth/login",
+  },
 };
 
 export default authConfig;

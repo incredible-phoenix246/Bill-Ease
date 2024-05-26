@@ -13,6 +13,7 @@ import ThemeProvider from "@/context/ThemeCtx";
 import { RoundThemeButton } from "@/components/theme";
 import { Toaster } from "@/components/ui/toaster";
 import StateContextProvider from "@/context/StateCtx";
+import { Providers } from "./provider";
 
 export const metadata: Metadata = {
   title: {
@@ -36,13 +37,15 @@ export default function RootLayout({
     <html lang="en">
       <ThemeProvider>
         <StateContextProvider>
-          <body
-            className={`${nunito.className} ${montserrat.variable} ${manrope.variable} ${workSans.variable} ${radioCanada.variable} ${openSans.variable} ${poppins.variable} dark:bg-dark-background bg-background dark:text-background text-dark-background transition-colors duration-300`}
-          >
-            {children}
-            <RoundThemeButton />
-            <Toaster />
-          </body>
+          <Providers>
+            <body
+              className={`${nunito.className} ${montserrat.variable} ${manrope.variable} ${workSans.variable} ${radioCanada.variable} ${openSans.variable} ${poppins.variable} dark:bg-dark-background bg-background dark:text-background text-dark-background transition-colors duration-300`}
+            >
+              {children}
+              <RoundThemeButton />
+              <Toaster />
+            </body>
+          </Providers>
         </StateContextProvider>
       </ThemeProvider>
     </html>

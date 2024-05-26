@@ -27,8 +27,6 @@ import { User } from "@/types";
 import { register, login } from "@/actions/auth";
 import { useRouter } from "next/navigation";
 
-
-
 const LoginForm = () => {
   const { toast } = useToast();
   const [defaultInpType, setDefaultInpType] = useState<"password" | "text">(
@@ -42,22 +40,22 @@ const LoginForm = () => {
       password: "",
     },
   });
-    const [isLoading, startTransition] = useTransition();
+  const [isLoading, startTransition] = useTransition();
 
-    const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     startTransition(() => {
       login(values).then(async (data) => {
-   signIn("credentials", {values, callbackUrl: '/dashboard'})
+        const loginva = JSON.stringify(values);
+        signIn("credentials", { loginva, redirect: false });
+        // console.log(data.user);
         toast({
           title:
-            data.status === 200
-              ? "Login successfull!"
-              : "An error occured",
+            data.status === 200 ? "Login successfull!" : "An error occured",
           description: `${data.message}`,
         });
-
-        router.push("/dashboard")
-
+        if (data.status === 200) {
+          router.push("/dashboard");
+        }
       });
     });
   };
@@ -73,7 +71,7 @@ const LoginForm = () => {
         <form
           action=""
           className="flex flex-col mt-8 gap-y-6 md:gap-y-6 "
-            onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit)}
         >
           <FormField
             control={form.control}
