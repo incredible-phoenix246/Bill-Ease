@@ -26,8 +26,8 @@ const HomePage = () => {
               <p className="mt-8  text-2xl leading-8 dark:text-background w-[495px] max-md:max-w-full text-dark-background">
                 BillEase is a versatile application designed to streamline the
                 creation of receipts, invoices, and various payment-related
-                documents. Whether you&apos;re a small business owner, freelancer, or
-                enterprise,
+                documents. Whether you&apos;re a small business owner,
+                freelancer, or enterprise,
               </p>
               <Button className="bg-primary h-[56] hover:bg-primary-light text-primary-content mt-8 dark:bg-secondary dark:text-secondary-content">
                 Get started
@@ -143,14 +143,14 @@ const BehindBIllEase = () => {
             initial={{ x: -100, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-            className="items-center bg-foreground border-border rounded-lg shadow sm:flex dark:bg-dark-foreground dark:border-dark-border"
+            className="items-center bg-foreground border-border rounded-lg shadow sm:flex dark:bg-dark-foreground dark:border-dark-border overflow-hidden"
           >
             <Image
               src="/phoenix.jpg"
               alt="phoenix"
               width={300}
               height={400}
-              className="md:h-[240px] md:w-[240px] object-cover rounded-lg w-full"
+              className="md:h-[240px] md:w-[240px] object-cover rounded-lg w-full overflow-hidden"
             />
 
             <div className="p-5">
@@ -232,14 +232,14 @@ const BehindBIllEase = () => {
             initial={{ x: 100, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-            className="items-center bg-foreground border-border rounded-lg shadow sm:flex dark:bg-dark-foreground dark:border-dark-border"
+            className="items-center bg-foreground border-border rounded-lg shadow sm:flex dark:bg-dark-foreground dark:border-dark-border overflow-hidden"
           >
             <Image
               src="/phoenix.jpg"
               alt="phoenix"
               width={300}
               height={400}
-              className="md:h-[240px] md:w-[240px] object-cover rounded-lg w-full"
+              className="md:h-[240px] md:w-[240px] object-cover rounded-lg w-full overflow-hidden"
             />
 
             <div className="p-5">
@@ -344,8 +344,8 @@ const CTA = () => {
               Digitize your pamyents collection
             </h3>
             <p className="text-copy-light dark:text-dark-copy-light">
-              Joined over 15+ Developers already growing with BillEase. what&apos;s
-              holding you back?
+              Joined over 15+ Developers already growing with BillEase.
+              what&apos;s holding you back?
             </p>
           </div>
           <div className="flex justify-center items-center gap-3">

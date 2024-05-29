@@ -10,11 +10,14 @@ import { useStateCtx } from "@/context/StateCtx";
 import { handleMouseEnter } from "@/utils/text-effect";
 import { usePathname } from "next/navigation";
 import { SearchBox } from "../miscellaneous/searchinput";
-import { Calendar, HambergerMenu, Notification } from "iconsax-react";
+import { ChartFail, HambergerMenu, Notification } from "iconsax-react";
 import { UserContainer } from "../miscellaneous/UserContainer";
+import MobileNav from "./mobile";
+import { FaBars } from "react-icons/fa";
 
 const UnAuthenticatedHeader = () => {
   const scrollHeight = useWindowHeight();
+  const { showMobileMenu, setShowMobileMenu } = useStateCtx();
 
   return (
     <nav
@@ -24,7 +27,7 @@ const UnAuthenticatedHeader = () => {
           ? " fixed backdrop-blur-xl top-0 left-0  z-50 -translate-y-28 opacity-0 animate-slideDown bg-background/90 py-1 border-b border-border dark:border-dark-border shadow-md"
           : "sm:py-6 py-4",
         {
-          "bg-white-100/60 dark:bg-dark-six ":
+          "bg-background/60 dark:bg-dark-background/60 ":
             scrollHeight > 800 && scrollHeight < 4300,
         }
       )}
@@ -38,6 +41,14 @@ const UnAuthenticatedHeader = () => {
       >
         <Image src="/logo.png" alt="logo" width={140} height={50} />
       </Link>
+      <div
+        tabIndex={0}
+        role="button"
+        className="lg:hidden text-2xl cursor-pointer text-copy dark:text-dark-copy "
+        onClick={() => setShowMobileMenu(true)}
+      >
+        <ChartFail variant="Bulk" />
+      </div>
       <div className="md:text-base text-xs font-semibold items-center justify-between md:gap-4 hidden md:flex py-4  ">
         <div className="flex gap-7">
           <Button asChild className="px-4 py-2">
@@ -48,6 +59,7 @@ const UnAuthenticatedHeader = () => {
           </Button>
         </div>
       </div>
+      <MobileNav />
     </nav>
   );
 };
