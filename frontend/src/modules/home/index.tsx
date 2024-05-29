@@ -350,10 +350,10 @@ const CTA = () => {
           </div>
           <div className="flex justify-center items-center gap-3">
             <Button asChild className="rounded-full" variant="outline">
-              <Link href="/">Login</Link>
+              <Link href="/auth/login">Login</Link>
             </Button>
             <Button asChild className="rounded-full">
-              <Link href="/">Get started</Link>
+              <Link href="/auth/signup">Get started</Link>
             </Button>
           </div>
         </div>
