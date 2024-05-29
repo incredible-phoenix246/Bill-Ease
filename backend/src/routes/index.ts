@@ -6,11 +6,11 @@ import {
   LoginwithGoogle,
 } from "../controllers/user.controller";
 
-const router = Router();
+const userrouter = Router();
 
-router.post("/auth/register", Register);
-router.post("/auth/verify-otp", VerifyOtp);
-router.post("/auth/login", Login);
-router.post("/auth/google", LoginwithGoogle);
+userrouter.post("/auth/register", Register);
+userrouter.post("/auth/verify-otp", VerifyOtp);
+userrouter.post("/auth/login", Login);
+userrouter.post("/auth/google", LoginwithGoogle);
 
-export { router };
+export { userrouter };

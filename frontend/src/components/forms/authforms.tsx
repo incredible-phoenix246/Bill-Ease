@@ -84,6 +84,7 @@ const LoginForm = () => {
                       {...field}
                       id="identifier"
                       type="text"
+                      disabled={isLoading}
                       className="block px-2.5 pb-2.5 placeholder:dark:text-background placeholder:text-dark-background pt-4 w-full  text-sm text-dark-copy dark:text-copy rounded-lg border border-background dark:border-dark-background h-[56px] dark:focus:border-primary focus:border-secondary focus:outline-none focus:ring-0 peer"
                       placeholder="email | username"
                     />
@@ -110,6 +111,7 @@ const LoginForm = () => {
                       <Input
                         {...field}
                         id="password"
+                        disabled={isLoading}
                         type={defaultInpType}
                         className="block px-2.5 pb-2.5 placeholder:dark:text-background placeholder:text-dark-background pt-4 w-full  text-sm text-dark-copy dark:text-copy rounded-lg border border-background dark:border-dark-background h-[56px] dark:focus:border-primary focus:border-secondary focus:outline-none focus:ring-0 peer"
                         placeholder="email | username"
@@ -150,8 +152,75 @@ const LoginForm = () => {
             </Link>
           </span>
           <div className="flex relative items-center [perspective:300px] transform-gpu max-sm:w-full">
-            <Button className="rounded-full w-full h-[56px] font-medium font-worksans flex space-x-2 text-[16px] bg-background dark:bg-dark-background dark:text-dark-copy hover:bg-foreground hover:dark:bg-dark-foreground text-copy">
-              Login
+            <Button
+              className={cn(
+                "rounded-full w-full h-[56px] font-medium font-worksans flex space-x-2 text-[16px] bg-background dark:bg-dark-background dark:text-dark-copy hover:bg-foreground hover:dark:bg-dark-foreground text-copy",
+                isLoading && "relative"
+              )}
+            >
+              {isLoading ? (
+                <>
+                  {/* <div className="loader">
+                    <span className="loader-text">Please wait ...</span>
+                    <span className="load" />
+                  </div> */}
+                  <svg
+                    viewBox="0 0 240 240"
+                    height="240"
+                    width="240"
+                    className="pl relative"
+                  >
+                    <circle
+                      strokeLinecap="round"
+                      strokeDashoffset="-330"
+                      strokeDasharray="0 660"
+                      strokeWidth="20"
+                      stroke="#000"
+                      fill="none"
+                      r="105"
+                      cy="120"
+                      cx="120"
+                      className="pl__ring pl__ring--a"
+                    ></circle>
+                    <circle
+                      strokeLinecap="round"
+                      strokeDashoffset="-110"
+                      strokeDasharray="0 220"
+                      strokeWidth="20"
+                      stroke="#000"
+                      fill="none"
+                      r="35"
+                      cy="120"
+                      cx="120"
+                      className="pl__ring pl__ring--b"
+                    ></circle>
+                    <circle
+                      strokeLinecap="round"
+                      strokeDasharray="0 440"
+                      strokeWidth="20"
+                      stroke="#000"
+                      fill="none"
+                      r="70"
+                      cy="120"
+                      cx="85"
+                      className="pl__ring pl__ring--c"
+                    ></circle>
+                    <circle
+                      strokeLinecap="round"
+                      strokeDasharray="0 440"
+                      strokeWidth="20"
+                      stroke="#000"
+                      fill="none"
+                      r="70"
+                      cy="120"
+                      cx="155"
+                      className="pl__ring pl__ring--d"
+                    ></circle>
+                  </svg>
+                </>
+              ) : (
+                "Login"
+              )}
             </Button>
           </div>
         </form>

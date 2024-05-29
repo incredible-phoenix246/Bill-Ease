@@ -180,22 +180,24 @@ const LoginwithGoogle = async (req: Request, res: Response) => {
       },
     });
 
-    if (!user.imageurl) {
-      await prisma.user.update({
-        where: {
-          email,
-        },
-        data: {
-          imageurl: image,
-        },
-      });
+    if (user) {
+      if (!user.imageurl) {
+        await prisma.user.update({
+          where: {
+            email,
+          },
+          data: {
+            imageurl: image,
+          },
+        });
+      }
     }
 
     if (!user) {
       user = await prisma.user.create({
         data: {
           email,
-          imageurl: image,
+          imageurl: image ? image : "./faceemoji",
           fullName: name,
           username: email.split("@")[0],
           verified: true,

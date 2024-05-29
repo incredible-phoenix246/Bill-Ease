@@ -50,7 +50,7 @@ export default {
       return { ...account, ...profile, ...user };
     },
 
-    async jwt({ token, user, account, profile }: any) {
+    async jwt({ token, user, account, profile }) {
       if (account?.provider !== "google") {
         return { ...token, ...user, ...account, ...profile };
       }

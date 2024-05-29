@@ -4,7 +4,7 @@ import https from "https";
 import cron from "node-cron";
 import { sayHelloController } from "./controllers";
 import { errorHandler } from "./middlewares";
-import { router } from "./routes";
+import { userrouter } from "./routes";
 
 const app = express();
 
@@ -23,11 +23,11 @@ function keepAlive(url: string) {
 
 // cron job to ping the server every minute and delete expired tokens every 5 minutes
 cron.schedule("*/5 * * * *", () => {
-  keepAlive("https://bill-ease.onrender.com/");
+  keepAlive("http://localhost:5555/");
   console.log("pinging the server every minute");
 });
 
-app.use("/api", router);
+app.use("/api", userrouter);
 
 app.get("/", sayHelloController);
 

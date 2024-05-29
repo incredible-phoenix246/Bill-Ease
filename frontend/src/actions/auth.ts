@@ -4,7 +4,6 @@ import { LoginSchema, RegisterSchema, OtpSchema } from "@/schemas";
 import * as z from "zod";
 import { baseurl } from "@/utils";
 import Calls from "./axios";
-import AuthError from "next-auth";
 
 const $Http = Calls(baseurl);
 
@@ -94,7 +93,7 @@ const GOOGLE_SIGN_IN = async (profile: any) => {
   try {
     const res = await $Http.post("/auth/google", {
       email: profile?.email,
-      name: profile?.name,  
+      name: profile?.name,
       image: profile?.picture,
     });
 
