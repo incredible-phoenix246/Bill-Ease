@@ -119,7 +119,7 @@ const VerifyOtp = async (req: Request, res: Response) => {
 };
 
 const Login = async (req: Request, res: Response) => {
-  const { identifier, password }: LoginProps = req.body;  
+  const { identifier, password }: LoginProps = req.body;
   try {
     const user = await prisma.user.findFirst({
       where: {
@@ -137,10 +137,11 @@ const Login = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Account is not verified" });
     }
 
-    if (!user.password){
-      return res
-       .status(400)
-       .json({ message: "Account was cereated with google auth create a password or login with google" });
+    if (!user.password) {
+      return res.status(400).json({
+        message:
+          "Account was cereated with google auth create a password or login with google",
+      });
     }
 
     // Verify password
@@ -178,6 +179,17 @@ const LoginwithGoogle = async (req: Request, res: Response) => {
         email,
       },
     });
+
+    if (!user.imageurl) {
+      await prisma.user.update({
+        where: {
+          email,
+        },
+        data: {
+          imageurl: image,
+        },
+      });
+    }
 
     if (!user) {
       user = await prisma.user.create({

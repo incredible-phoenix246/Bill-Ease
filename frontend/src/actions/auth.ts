@@ -4,7 +4,7 @@ import { LoginSchema, RegisterSchema, OtpSchema } from "@/schemas";
 import * as z from "zod";
 import { baseurl } from "@/utils";
 import Calls from "./axios";
-// import { signIn } from "@/auth";
+import AuthError from "next-auth";
 
 const $Http = Calls(baseurl);
 

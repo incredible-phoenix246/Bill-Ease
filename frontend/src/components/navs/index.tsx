@@ -5,6 +5,7 @@ import useWindowHeight from "@/hooks/useDimension";
 import { cn } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const UnAuthenticatedHeader = () => {
   const scrollHeight = useWindowHeight();
@@ -31,6 +32,16 @@ const UnAuthenticatedHeader = () => {
       >
         <Image src="/logo.png" alt="logo" width={140} height={50} />
       </Link>
+      <div className="md:text-base text-xs font-semibold items-center justify-between md:gap-4 hidden md:flex py-4  ">
+        <div className="flex gap-7">
+          <Button asChild className="px-4 py-2">
+            <Link href="/auth/login">Sign In</Link>
+          </Button>
+          <Button asChild className="px-4 py-2">
+            <Link href="/auth/signup">Get Started</Link>
+          </Button>
+        </div>
+      </div>
     </nav>
   );
 };

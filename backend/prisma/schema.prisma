@@ -15,10 +15,15 @@ model user {
   username     String         @unique
   verified     Boolean        @default(false)
   password     String?
+  bio          String?
   imageurl     String?
   otp          String?
   otpExpires   DateTime?
   organization organization[]
+  reciepts     reciepts[]
+  invoice      invoice[]
+  createdAt    DateTime?      @default(now())
+  updatedAt    DateTime       @updatedAt
 
   @@map("Users")
 }
@@ -31,4 +36,57 @@ model organization {
   user     user   @relation(fields: [userId], references: [id])
   userId   Int
   email    String
+
+  @@map("Org")
+}
+
+model reciepts {
+  id        Int      @id @default(autoincrement())
+  amount    Int
+  from      String
+  for       String
+  currency  String
+  email     String
+  user      user     @relation(fields: [userId], references: [id])
+  userId    Int
+  type      String   @default("part")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("Reciepts")
+}
+
+model invoiceitem {
+  id          Int       @id @default(autoincrement())
+  quantity    Int
+  unitprice   Float
+  description String
+  invoice     invoice[]
+
+  @@map("Invoiceitem")
+}
+
+model invoice {
+  id            Int         @id @default(autoincrement())
+  user          user        @relation(fields: [userId], references: [id])
+  userId        Int
+  item          invoiceitem @relation(fields: [invoiceitemId], references: [id], onDelete: Cascade)
+  invoiceitemId Int
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  from          String
+  amount        String
+  payymentinfo  String
+
+  @@map("Invoice")
+}
+
+model feedback {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  viewed    Boolean? @default(false)
+  feedback  String
+
+  @@map("Feedback")
 }

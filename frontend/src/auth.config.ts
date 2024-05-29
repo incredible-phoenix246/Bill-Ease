@@ -1,31 +1,15 @@
-import type { NextAuthOptions } from "next-auth";
+import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
 import { login } from "./actions/auth";
-import { baseurl } from "./utils";
-import Calls from "./actions/axios";
 import { LoginSchema } from "./schemas";
 import { GOOGLE_SIGN_IN } from "./actions/auth";
-import { Redirect } from "next";
-import { User } from "./types";
+import Google from "next-auth/providers/google";
 
-const $Http = Calls(baseurl);
-
-const authConfig: NextAuthOptions = {
-  secret: "i AM A SECretive secret",
-
+export default {
   providers: [
-    GoogleProvider({
+    Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      // profile(profile) {
-      //   return {
-      //     id: profile.sub,
-      //     name: profile.name,
-      //     email: profile.email,
-      //     image: profile.picture,
-      //   };
-      // },
       authorization: {
         params: {
           prompt: "consent",
@@ -74,14 +58,13 @@ const authConfig: NextAuthOptions = {
       const use = res.user;
       return { ...token, ...user, ...account, ...profile, ...use };
     },
-    async session({ session, token, user }) {
+    async session({ session, token }) {
       session.user = token as any;
+      console.log(session);
       return session;
     },
   },
   pages: {
     signIn: "/auth/login",
   },
-};
-
-export default authConfig;
+} satisfies NextAuthConfig;
