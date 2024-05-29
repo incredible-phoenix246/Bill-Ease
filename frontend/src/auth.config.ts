@@ -56,6 +56,7 @@ export default {
       }
       const res = await GOOGLE_SIGN_IN(profile);
       const use = res.user;
+      console.log(res);
       return { ...token, ...user, ...account, ...profile, ...use };
     },
     async session({ session, token }) {

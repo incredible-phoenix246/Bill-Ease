@@ -94,7 +94,7 @@ const GOOGLE_SIGN_IN = async (profile: any) => {
   try {
     const res = await $Http.post("/auth/google", {
       email: profile?.email,
-      name: profile?.name,
+      name: profile?.name,  
       image: profile?.picture,
     });
 
@@ -104,6 +104,7 @@ const GOOGLE_SIGN_IN = async (profile: any) => {
       user: res.data.user,
     };
   } catch (e: any) {
+    console.log(e);
     return {
       message: e?.response?.data.message,
       status: e?.response?.status,

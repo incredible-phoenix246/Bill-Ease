@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const baseurl = "https://bill-ease.onrender.com/api";
+export const baseurl = "https://bill-ease-7g79.vercel.app/api";
 
 export function maskEmail(email: string): string {
   const [localPart, domain] = email.split("@");
