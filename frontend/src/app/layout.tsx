@@ -13,6 +13,7 @@ import ThemeProvider from "@/context/ThemeCtx";
 import { RoundThemeButton } from "@/components/theme";
 import { Toaster } from "@/components/ui/toaster";
 import StateContextProvider from "@/context/StateCtx";
+import SwipeIndicator from "@/components/miscellaneous/SwipeIndicator";
 import { Providers } from "./provider";
 
 export const metadata: Metadata = {
@@ -43,6 +44,7 @@ export default function RootLayout({
             >
               {children}
               <RoundThemeButton />
+              <SwipeIndicator />
               <Toaster />
             </body>
           </Providers>

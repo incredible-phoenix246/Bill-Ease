@@ -6,4 +6,18 @@ interface User {
   imageUrl?: string;
 }
 
-export { User };
+type SidebarProps = {
+  id?: number;
+  label: string;
+  icon: Icon;
+  link: string;
+};
+
+type SidebarFooterProps = {
+  id?: number;
+  label: string;
+  icon: Icon;
+  link: "open-sidebar" | "settings" | "logout";
+};
+
+export { User, SidebarProps, SidebarFooterProps };
