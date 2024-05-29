@@ -40,11 +40,20 @@ const MobileNav = () => {
         <div className="flex flex-col  items-start h-full gap-y-10 ">
           <div className="w-[267px] h-16 p-2 justify-center items-center gap-4 lg:flex-row flex flex-col mt-20  lg:mt-0 z-20">
             <div className="justify-center items-center lg:w-auto w-[100%] gap-2 lg:flex-row flex flex-col">
-              <Button asChild className="rounded-full" variant="outline">
+              <Button
+                asChild
+                className="rounded-full"
+                variant="outline"
+                onClick={() => setShowMobileMenu(false)}
+              >
                 <Link href="/auth/sign-in">Login</Link>
               </Button>
 
-              <Button asChild className="rounded-full">
+              <Button
+                asChild
+                className="rounded-full"
+                onClick={() => setShowMobileMenu(false)}
+              >
                 <Link href="/auth/signup">Get started</Link>
               </Button>
             </div>
