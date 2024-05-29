@@ -46,7 +46,7 @@ const MobileNav = () => {
                 variant="outline"
                 onClick={() => setShowMobileMenu(false)}
               >
-                <Link href="/auth/sign-in">Login</Link>
+                <Link href="/auth/login">Login</Link>
               </Button>
 
               <Button
